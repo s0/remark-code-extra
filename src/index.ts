@@ -1,24 +1,34 @@
-import {Node} from 'unist';
+
 import {Attacher, Transformer} from 'unified';
 import visit = require('unist-util-visit');
 
 import {validateOptions} from './options';
-
-interface MDASTCode extends Node {
-  lang?: string;
-  meta: null | string;
-  value: string;
-}
+import { MDASTCode, MDASTCodeExtra } from './types';
 
 const attacher: Attacher = (options) =>  {
   if (!validateOptions(options))
     throw new Error('Invalid options');
 
   const transformer: Transformer = async (tree, _file) => {
-    visit<MDASTCode>(tree, 'code', _node => {
-      // TODO
+
+    // List of transformations that are ocurring
+    let transformations: Promise<void>[] = [];
+
+    visit<MDASTCode>(tree, 'code', node => {
+      const transform = typeof options.transform === 'function' ? options.transform(node) : options.transform;
+      // Asyncronously apply the transformation
+      transformations.push(
+        Promise.resolve(transform).then(transform => {
+          if (transform) {
+            // apply transformation
+            const n = node as MDASTCodeExtra;
+            n.type = 'code-extra';
+          }
+        })
+      );
     });
 
+    await Promise.all(transformations);
     return tree;
   };
 

@@ -5,7 +5,8 @@ import * as remark from 'remark';
 import * as html from 'remark-html';
 
 import * as codeExtra from 'remark-code-extra';
-import {Options} from 'remark-code-extra/options';
+import { Options } from 'remark-code-extra/options';
+import { MDASTCode } from 'remark-code-extra/types';
 import {promisify} from 'util';
 
 const readFile = promisify(fs.readFile);
@@ -13,11 +14,11 @@ const writeFile = promisify(fs.writeFile);
 
 const FILES_DIR = path.join(path.dirname(__dirname), 'files');
 
-function test(name: string, options: Options) {
+function test(name: string, file: string, options: Options) {
   it(name, async () => {
 
-    const markdownPath = path.join(FILES_DIR, name + '.md');
-    const htmlPath = path.join(FILES_DIR, name + '.expected.html');
+    const markdownPath = path.join(FILES_DIR, file + '.md');
+    const htmlPath = path.join(FILES_DIR, file + '.expected.html');
 
     const processor = remark()
       .use(codeExtra, options)
@@ -41,5 +42,19 @@ function test(name: string, options: Options) {
 }
 
 describe('main tests', () => {
-  test('001', {});
+  test('Skip all', '001', {
+    transform: () => null
+  });
+  test('Skip all async', '001', {
+    transform: async () => null
+  });
+  test('Skip specific language', '002', {
+    transform: (node: MDASTCode) => node.lang === 'skipped' ? null : {}
+  });
+  test('Skip specific language async', '002', {
+    transform: (node: MDASTCode) => node.lang === 'skipped' ? null : {}
+  });
+  test('No transformation', '003', {transform: {
+    // No concrete transformation
+  }});
 });
