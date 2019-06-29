@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as remark from 'remark';
 import * as midas from 'remark-midas';
 import * as treeSitter from 'remark-tree-sitter';
+import * as highlight from 'remark-highlight.js';
 import * as html from 'remark-html';
 
 import * as codeExtra from 'remark-code-extra';
@@ -17,7 +18,7 @@ const writeFile = promisify(fs.writeFile);
 
 const FILES_DIR = path.join(path.dirname(__dirname), 'files');
 
-function test(name: string, input: string, output: string, options: Options, use?: 'midas' | 'tree-sitter') {
+function test(name: string, input: string, output: string, options: Options, use?: 'midas' | 'tree-sitter' | 'highlight.js') {
   it(name, async () => {
 
     const markdownPath = path.join(FILES_DIR, 'input', input + '.md');
@@ -31,6 +32,8 @@ function test(name: string, input: string, output: string, options: Options, use
       processor = processor.use(treeSitter, {
         grammarPackages: ['@atom-languages/language-typescript']
       });
+
+    if (use === 'highlight.js') processor = processor.use(highlight);
 
     processor = processor.use(codeExtra, options).use(html);
 
@@ -140,10 +143,18 @@ describe('main tests', () => {
     'midas');
 
   test(
-    'Add tree-sitter with header async', 'typescript', '010', {
+    'Add tree-sitter with footer async', 'typescript', '010', {
       transform: async () => ({
         footers: [element]
       })
     },
     'tree-sitter');
+
+  test(
+    'Add highlight.js with footer async', 'typescript', '011', {
+      transform: async () => ({
+        footers: [element]
+      })
+    },
+    'highlight.js');
 });
