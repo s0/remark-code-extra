@@ -2,6 +2,8 @@
 
 [![Build Status](https://dev.azure.com/samlanning/general/_apis/build/status/remark-code-extra?branchName=master)](https://dev.azure.com/samlanning/general/_build/latest?definitionId=7&branchName=master)
 
+Add to or transform the HTML output of markdown code blocks using [remark](https://github.com/remarkjs/remark).
+
 ## Related
 
 *   [`remark-rehype`](https://github.com/remarkjs/remark-rehype)
