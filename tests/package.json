@@ -1,5 +1,5 @@
 {
-  "description": "Example scripts using remark-tree-sitter",
+  "description": "Tests for remark-code-extra",
   "license": "MIT",
   "devDependencies": {
     "@types/mocha": "^5.2.7",

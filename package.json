@@ -1,7 +1,7 @@
 {
   "name": "remark-code-extra",
   "version": "0.0.1",
-  "description": "Add additional elements to codeblocks",
+  "description": "Add to or transform the HTML output of markdown code blocks using remark",
   "keywords": [
     "remark-plugin",
     "remark"
