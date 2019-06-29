@@ -130,7 +130,7 @@ then the code block will remain unmodified.
 The function is passed the [mdast][] node for the code block as a parameter,
 so you can transform the code block based on its markdown information.
 
-e.g:
+**Examples:**
 
 ```js
 // Always transform
@@ -165,6 +165,35 @@ An object that specifies how a code block should be transformed.
 
 (optional) A function that applies arbitrary changes to the [mdast][] node for this code block (after it has already been changed to a `code-extra` node and prepared as a `<div>`).
 If this function has asyncronous operations, then it must return a `Promise`.
+
+**Example:**
+
+```js
+unified()
+  .use(markdown)
+  .use(highlight)
+  .use(codeExtra, {
+    transform: node => node.meta ? ({
+      before: [
+        {
+          type: 'text',
+          value: 'This code block has meta!'
+        }
+      ],
+      after: [
+        {
+          type: 'text',
+          value: node.meta
+        }
+      ],
+      transform: node => {
+        // Add a class to it
+        node.data.hProperties.className.push('has-meta');
+      }
+    }) : null
+  })
+```
+
 
 ## Related
 
