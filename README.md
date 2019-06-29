@@ -2,7 +2,7 @@
 
 [![Build Status](https://dev.azure.com/samlanning/general/_apis/build/status/remark-code-extra?branchName=master)](https://dev.azure.com/samlanning/general/_build/latest?definitionId=7&branchName=master)
 
-Add to or transform the HTML output of markdown code blocks using [remark](https://github.com/remarkjs/remark).
+Add to or transform the HTML output of markdown code blocks using [remark][].
 
 ## Related
 
@@ -20,3 +20,9 @@ Add to or transform the HTML output of markdown code blocks using [remark](https
     — [rehype][] plugin to highlight code (via refractor)
 *   [`rehype-shiki`](https://github.com/rsclarke/rehype-shiki)
     — [rehype][] plugin to highlight code with shiki
+
+<!-- Definitions -->
+
+[remark]: https://github.com/remarkjs/remark
+
+[rehype]: https://github.com/rehypejs/rehype
