@@ -53,7 +53,7 @@ const element: Element = {
 
 describe('main tests', () => {
   test('Skip all', 'basic', '001', {
-    transform: () => null
+    transform: () => { /* undefined */ }
   });
   test('Skip all async', 'basic', '001', {
     transform: async () => null
