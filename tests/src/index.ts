@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as remark from 'remark';
 import * as midas from 'remark-midas';
+import * as treeSitter from 'remark-tree-sitter';
 import * as html from 'remark-html';
 
 import * as codeExtra from 'remark-code-extra';
@@ -16,7 +17,7 @@ const writeFile = promisify(fs.writeFile);
 
 const FILES_DIR = path.join(path.dirname(__dirname), 'files');
 
-function test(name: string, input: string, output: string, options: Options, useMidas = false) {
+function test(name: string, input: string, output: string, options: Options, use?: 'midas' | 'tree-sitter') {
   it(name, async () => {
 
     const markdownPath = path.join(FILES_DIR, 'input', input + '.md');
@@ -24,7 +25,12 @@ function test(name: string, input: string, output: string, options: Options, use
 
     let processor = remark();
 
-    if (useMidas) processor = processor.use(midas);
+    if (use === 'midas') processor = processor.use(midas);
+
+    if (use === 'tree-sitter')
+      processor = processor.use(treeSitter, {
+        grammarPackages: ['@atom-languages/language-typescript']
+      });
 
     processor = processor.use(codeExtra, options).use(html);
 
@@ -131,5 +137,13 @@ describe('main tests', () => {
         headers: [element]
       })
     },
-    true);
+    'midas');
+
+  test(
+    'Add tree-sitter with header async', 'typescript', '010', {
+      transform: async () => ({
+        footers: [element]
+      })
+    },
+    'tree-sitter');
 });
