@@ -14,11 +14,11 @@ const writeFile = promisify(fs.writeFile);
 
 const FILES_DIR = path.join(path.dirname(__dirname), 'files');
 
-function test(name: string, file: string, options: Options) {
+function test(name: string, input: string, output: string, options: Options) {
   it(name, async () => {
 
-    const markdownPath = path.join(FILES_DIR, file + '.md');
-    const htmlPath = path.join(FILES_DIR, file + '.expected.html');
+    const markdownPath = path.join(FILES_DIR, 'input', input + '.md');
+    const htmlPath = path.join(FILES_DIR, 'output', output + '.expected.html');
 
     const processor = remark()
       .use(codeExtra, options)
@@ -42,19 +42,19 @@ function test(name: string, file: string, options: Options) {
 }
 
 describe('main tests', () => {
-  test('Skip all', '001', {
+  test('Skip all', 'basic', '001', {
     transform: () => null
   });
-  test('Skip all async', '001', {
+  test('Skip all async', 'basic', '001', {
     transform: async () => null
   });
-  test('Skip specific language', '002', {
+  test('Skip specific language', 'basic', '002', {
     transform: (node: MDASTCode) => node.lang === 'skipped' ? null : {}
   });
-  test('Skip specific language async', '002', {
+  test('Skip specific language async', 'basic', '002', {
     transform: (node: MDASTCode) => node.lang === 'skipped' ? null : {}
   });
-  test('No transformation', '003', {transform: {
+  test('No transformation', 'basic', '003', {transform: {
     // No concrete transformation
   }});
 });
