@@ -2,6 +2,7 @@ import * as assert from 'assert';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as remark from 'remark';
+import * as midas from 'remark-midas';
 import * as html from 'remark-html';
 
 import * as codeExtra from 'remark-code-extra';
@@ -15,15 +16,17 @@ const writeFile = promisify(fs.writeFile);
 
 const FILES_DIR = path.join(path.dirname(__dirname), 'files');
 
-function test(name: string, input: string, output: string, options: Options) {
+function test(name: string, input: string, output: string, options: Options, useMidas = false) {
   it(name, async () => {
 
     const markdownPath = path.join(FILES_DIR, 'input', input + '.md');
     const htmlPath = path.join(FILES_DIR, 'output', output + '.expected.html');
 
-    const processor = remark()
-      .use(codeExtra, options)
-      .use(html);
+    let processor = remark();
+
+    if (useMidas) processor = processor.use(midas);
+
+    processor = processor.use(codeExtra, options).use(html);
 
     const markdownSource = await readFile(markdownPath, 'utf8');
     const htmlResult = await promisify(processor.process)(markdownSource);
@@ -121,4 +124,12 @@ describe('main tests', () => {
       })
     }
   });
+
+  test(
+    'Add midas with header async', 'css', '009', {
+      transform: async () => ({
+        headers: [element]
+      })
+    },
+    true);
 });

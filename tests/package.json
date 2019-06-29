@@ -20,6 +20,7 @@
   "dependencies": {
     "mocha": "^6.1.4",
     "remark": "^10.0.1",
-    "remark-html": "^9.0.0"
+    "remark-html": "^9.0.0",
+    "remark-midas": "^5.1.1"
   }
 }
