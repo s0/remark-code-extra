@@ -1,6 +1,6 @@
 # remark-code-extra
 
-[![Build Status](https://dev.azure.com/samlanning/general/_apis/build/status/remark-code-extra?branchName=master)](https://dev.azure.com/samlanning/general/_build/latest?definitionId=7&branchName=master)
+[![Build Status](https://dev.azure.com/samlanning/general/_apis/build/status/remark-code-extra?branchName=master)](https://dev.azure.com/samlanning/general/_build/latest?definitionId=7&branchName=master) [![Total alerts](https://img.shields.io/lgtm/alerts/g/samlanning/remark-code-extra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/samlanning/remark-code-extra/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/samlanning/remark-code-extra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/samlanning/remark-code-extra/context:javascript) [![](https://img.shields.io/npm/v/remark-code-extra.svg)](https://www.npmjs.com/package/remark-code-extra)
 
 Add to or transform the HTML output of markdown code blocks using [remark][].
 
@@ -10,7 +10,7 @@ Add to or transform the HTML output of markdown code blocks using [remark][].
     — Transform Markdown to HTML
 *   [`remark-midas`](https://github.com/remarkjs/remark-midas)
     — Highlight CSS code blocks with midas (rehype compatible)
-*   [`remark-tree-sitter`](https://github.com/samlanning/remark-tree-sitter)
+*   [`remark-code-extra`](https://github.com/samlanning/remark-code-extra)
     — Highlight code with tree-sitter (rehype compatible)
 *   [`remark-highlight.js`](https://github.com/remarkjs/remark-highlight.js)
     — Highlight code with highlight.js (via lowlight)
