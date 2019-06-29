@@ -4,13 +4,175 @@
 
 Add to or transform the HTML output of markdown code blocks using [remark][].
 
+For example, you can add dedicated links to code snippets that copy the code, or link to a live demo etc...
+
+This plugin is compatible with most [remark][] syntax highlighting plugins,
+including [`remark-midas`](https://github.com/remarkjs/remark-midas),
+[`remark-tree-sitter`](https://github.com/samlanning/tree-sitter) and
+[`remark-highlight.js`](https://github.com/remarkjs/remark-highlight.js).
+Just make sure that you use this plugin *after* the highlighting plugins.
+
+## Install
+
+[npm][]:
+
+```sh
+npm install remark-code-extra
+```
+
+## Use
+
+Say we have the following Markdown file, `example.md`:
+
+```markdown
+We'll transform this one:
+
+~~~java https://stackoverflow.com/questions/4042434/converting-arrayliststring-to-string-in-java
+List<String> list = ..;
+String[] array = list.toArray(new String[0]);
+~~~
+
+But leave this the same:
+
+~~~java
+List<String> list = ..;
+String[] array = list.toArray(new String[0]);
+~~~
+```
+
+And our script, `example.js`, looks as follows:
+
+```js
+const vfile = require('to-vfile')
+const report = require('vfile-reporter')
+const unified = require('unified')
+const markdown = require('remark-parse')
+const html = require('remark-html')
+const highlight = require('remark-highlight.js')
+const codeExtra = require('remark-code-extra');
+
+unified()
+  .use(markdown)
+  .use(highlight)
+  .use(codeExtra, {
+    // Add a link to stackoverflow if there is one in the meta
+    transform: node => node.meta ? ({
+      footers: [
+        {
+          type: 'element',
+          tagName: 'a',
+          properties: {
+            href: node.meta
+          },
+          children: [{
+            type: 'text',
+            value: 'View on Stack Overflow'
+          }]
+        }
+      ]
+    }) : null
+  })
+  .use(html)
+  .process(vfile.readSync('example.md'), (err, file) => {
+    console.error(report(err || file))
+    console.log(String(file))
+  })
+```
+
+Now, running `node example` yields:
+
+```html
+<p>We'll transform this one:</p>
+<div class="code-extra"><pre><code class="hljs language-java">List&#x3C;String> list = ..;
+String[] array = list.toArray(<span class="hljs-keyword">new</span> String[<span class="hljs-number">0</span>]);</code></pre><a href="https://stackoverflow.com/questions/4042434/converting-arrayliststring-to-string-in-java">View on Stack Overflow</a></div>
+<p>But leave this the same:</p>
+<pre><code class="hljs language-java">List&#x3C;String> list = ..;
+String[] array = list.toArray(<span class="hljs-keyword">new</span> String[<span class="hljs-number">0</span>]);</code></pre>
+
+```
+
+Notice how the first codeblock is now wrapped in a `<div>` and has a link to stackoverflow added, whereas the second code block has remained unchanged.
+
+For further examples, please see the [unit tests](tests/src/index.ts).
+
+## API
+
+### `remark().use(codeExtra, options)`
+
+`options` is a required parameter, and you must always specify `transform`.
+
+#### `options.transform`
+
+Either a `TransformResults` object, a function that returns a `TransformResults` object, or a function that returns a promise that eventually resolves to a `TransformResults` object.
+
+If it is object (as opposed to a function),
+every code block will always be "transformed".
+That is, it will be wrapped in a `<div>`,
+and further plugins that interact with MDAST code blocks will not see them.
+
+e.g:
+
+```js
+{
+  transform: { 
+    headers: [ /* ... */ ],
+    footers: [ /* ... */ ]
+  }
+}
+```
+
+If instead it is a function,
+then a code block will be "transformed"
+only if you return a `TransformResults`.
+If you return nothing, or `undefined` or `null` etc... 
+then the code block will remain unmodified.
+
+The function is passed the [mdast][] node for the code block as a parameter,
+so you can transform the code block based on its markdown information.
+
+e.g:
+
+```js
+// Always transform
+{
+  transform: node => ({ /* TransformResults object */ })
+}
+
+// Only transform when the node has metadata
+{
+  transform: node => node.meta ? { /* TransformResults object */ } : null
+}
+
+// Asyncronously determine if and how a node should be transformed
+{
+  transform: async node => ({ /* TransformResults object */ })
+}
+```
+
+### `TransformResults`
+
+An object that specifies how a code block should be transformed.
+
+#### `TransformResults.headers`
+
+(optional) An array of [hast][] elements (or a `Promise` returning such an `Array`) to add to the top of the HTML for this code block.
+
+#### `TransformResults.footers`
+
+(optional) An array of [hast][] elements (or a `Promise` returning such an `Array`) to add to the bottom of the HTML for this code block.
+
+#### `TransformResults.transform`
+
+(optional) A function that applies arbitrary changes to the [mdast][] node for this code block (after it has already been changed to a `code-extra` node and prepared as a `<div>`).
+If this function has asyncronous operations, then it must return a `Promise`.
+
 ## Related
 
 *   [`remark-rehype`](https://github.com/remarkjs/remark-rehype)
     — Transform Markdown to HTML
 *   [`remark-midas`](https://github.com/remarkjs/remark-midas)
     — Highlight CSS code blocks with midas (rehype compatible)
-*   [`remark-code-extra`](https://github.com/samlanning/remark-code-extra)
+*   [`remark-tree-sitter`](https://github.com/samlanning/tree-sitter)
     — Highlight code with tree-sitter (rehype compatible)
 *   [`remark-highlight.js`](https://github.com/remarkjs/remark-highlight.js)
     — Highlight code with highlight.js (via lowlight)
@@ -22,6 +184,12 @@ Add to or transform the HTML output of markdown code blocks using [remark][].
     — [rehype][] plugin to highlight code with shiki
 
 <!-- Definitions -->
+
+[hast]: https://github.com/syntax-tree/hast
+
+[mdast]: https://github.com/syntax-tree/mdast
+
+[npm]: https://docs.npmjs.com/cli/install
 
 [remark]: https://github.com/remarkjs/remark
 
