@@ -37,10 +37,10 @@ const attacher: Attacher = (options) =>  {
             const n = node as MDASTCodeExtra;
             n.type = 'code-extra';
             if (!n.data) n.data = {};
-            const headers = transform.headers ? await Promise.resolve(transform.headers) : [];
-            const footers = transform.footers ? await Promise.resolve(transform.footers) : [];
+            const before = transform.before ? await Promise.resolve(transform.before) : [];
+            const after = transform.after ? await Promise.resolve(transform.after) : [];
             const children: Element[] = [
-              ...headers,
+              ...before,
               {
                 type: 'element',
                 tagName: 'pre',
@@ -53,7 +53,7 @@ const attacher: Attacher = (options) =>  {
                   }
                 ]
               },
-              ...footers
+              ...after
             ];
             n.data.hName = 'div';
             n.data.hProperties = {

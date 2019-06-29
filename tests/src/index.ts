@@ -80,42 +80,42 @@ describe('main tests', () => {
     // No concrete transformation
   }});
   test('Add header', 'basic', '004', {transform: {
-    headers: [element]
+    before: [element]
   }
   });
   test('Add header func', 'basic', '004', {
     transform: () => ({
-      headers: [element]
+      before: [element]
     })
   });
   test('Add header async', 'basic', '004', {
     transform: async () => ({
-      headers: [element]
+      before: [element]
     })
   });
-  test('Add multiple headers', 'basic', '005', {
+  test('Add multiple before', 'basic', '005', {
     transform: {
-      headers: [element, element]
+      before: [element, element]
     }
   });
   test('Add footer', 'basic', '006', {
     transform: {
-      footers: [element]
+      after: [element]
     }
   });
   test('Add footer func', 'basic', '006', {
     transform: () => ({
-      footers: [element]
+      after: [element]
     })
   });
   test('Add footer async', 'basic', '006', {
     transform: async () => ({
-      footers: [element]
+      after: [element]
     })
   });
-  test('Add multiple footers', 'basic', '007', {
+  test('Add multiple after', 'basic', '007', {
     transform: {
-      footers: [element, element]
+      after: [element, element]
     }
   });
   test('Add class to pre', 'basic', '008', {
@@ -137,7 +137,7 @@ describe('main tests', () => {
   test(
     'Add midas with header async', 'css', '009', {
       transform: async () => ({
-        headers: [element]
+        before: [element]
       })
     },
     'midas');
@@ -145,7 +145,7 @@ describe('main tests', () => {
   test(
     'Add tree-sitter with footer async', 'typescript', '010', {
       transform: async () => ({
-        footers: [element]
+        after: [element]
       })
     },
     'tree-sitter');
@@ -153,7 +153,7 @@ describe('main tests', () => {
   test(
     'Add highlight.js with footer async', 'typescript', '011', {
       transform: async () => ({
-        footers: [element]
+        after: [element]
       })
     },
     'highlight.js');

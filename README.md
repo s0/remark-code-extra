@@ -57,7 +57,7 @@ unified()
   .use(codeExtra, {
     // Add a link to stackoverflow if there is one in the meta
     transform: node => node.meta ? ({
-      footers: [
+      after: [
         {
           type: 'element',
           tagName: 'a',
@@ -115,8 +115,8 @@ e.g:
 ```js
 {
   transform: { 
-    headers: [ /* ... */ ],
-    footers: [ /* ... */ ]
+    before: [ /* ... */ ],
+    after: [ /* ... */ ]
   }
 }
 ```
@@ -153,11 +153,11 @@ e.g:
 
 An object that specifies how a code block should be transformed.
 
-#### `TransformResults.headers`
+#### `TransformResults.before`
 
 (optional) An array of [hast][] elements (or a `Promise` returning such an `Array`) to add to the top of the HTML for this code block.
 
-#### `TransformResults.footers`
+#### `TransformResults.after`
 
 (optional) An array of [hast][] elements (or a `Promise` returning such an `Array`) to add to the bottom of the HTML for this code block.
 

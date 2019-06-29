@@ -12,7 +12,7 @@ unified()
   .use(codeExtra, {
     // Add a link to stackoverflow if there is one in the meta
     transform: node => node.meta ? ({
-      footers: [
+      after: [
         {
           type: 'element',
           tagName: 'a',
