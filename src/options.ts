@@ -5,11 +5,11 @@ export interface TransformResults {
   /**
    * Elements to add to the top of the HTML for this code block
    */
-  headers?: [hast.Element] | Promise<[hast.Element]>;
+  headers?: hast.Element[] | Promise<hast.Element[]>;
   /**
    * Elements to add to the bottom of the HTML for this code block
    */
-  footers?: [hast.Element] | Promise<[hast.Element]>;
+  footers?: hast.Element[] | Promise<hast.Element[]>;
   /**
    * A general function that applies arbitrary changes to the MDAST node
    */
