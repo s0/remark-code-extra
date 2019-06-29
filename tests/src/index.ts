@@ -106,4 +106,19 @@ describe('main tests', () => {
       footers: [element, element]
     }
   });
+  test('Add class to pre', 'basic', '008', {
+    transform: {
+      transform: node => {
+        (node.data as any).hChildren[0].properties = {className: ['foo']};
+      }
+    }
+  });
+  test('Add class to pre async', 'basic', '008', {
+    transform: {
+      transform: node => new Promise(resolve => {
+        (node.data as any).hChildren[0].properties = { className: ['foo'] };
+        setTimeout(resolve, 0);
+      })
+    }
+  });
 });

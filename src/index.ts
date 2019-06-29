@@ -60,6 +60,8 @@ const attacher: Attacher = (options) =>  {
               className: ['code-extra']
             };
             n.data.hChildren = children;
+            if (transform.transform)
+              return transform.transform(n);
           }
         })
       );
