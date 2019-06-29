@@ -201,7 +201,7 @@ unified()
     — Transform Markdown to HTML
 *   [`remark-midas`](https://github.com/remarkjs/remark-midas)
     — Highlight CSS code blocks with midas (rehype compatible)
-*   [`remark-tree-sitter`](https://github.com/samlanning/tree-sitter)
+*   [`remark-tree-sitter`](https://github.com/samlanning/remark-tree-sitter)
     — Highlight code with tree-sitter (rehype compatible)
 *   [`remark-highlight.js`](https://github.com/remarkjs/remark-highlight.js)
     — Highlight code with highlight.js (via lowlight)
