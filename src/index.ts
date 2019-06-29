@@ -30,9 +30,9 @@ const attacher: Attacher = (options) =>  {
               }];
             const codeProperties: any =
               node.data && node.data.hProperties ||
-              node.lang ? {
+              (node.lang ? {
                 className: ['language-' + node.lang]
-              } : {};
+              } : {});
             // apply transformation
             const n = node as MDASTCodeExtra;
             n.type = 'code-extra';
