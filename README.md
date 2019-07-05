@@ -100,7 +100,7 @@ For further examples, please see the [unit tests](tests/src/index.ts).
 If you want more detailed options than the `meta` [mdast][] property provides, then you can use
 [`remark-code-frontmatter`](https://github.com/samlanning/remark-code-frontmatter)
 to include frontmatter at the top of your code block and specify detailed options.
-The processed frontmatter is then made available to use via the `frontmatter ` field.
+The processed frontmatter is then made available to use via the `frontmatter` field.
 
 You must make sure to use the `remark-code-frontmatter` plugin **before** using `remark-code-extra`.
 
