@@ -95,6 +95,82 @@ Notice how the first codeblock is now wrapped in a `<div>` and has a link to sta
 
 For further examples, please see the [unit tests](tests/src/index.ts).
 
+### Use with [`remark-code-frontmatter`](https://github.com/samlanning/remark-code-frontmatter)
+
+If you want more detailed options than the `meta` [mdast][] node provides, then you can use
+[`remark-code-frontmatter`](https://github.com/samlanning/remark-code-frontmatter)
+to include frontmatter at the top of your code block and specify detailed options.
+The processed frontmatter is then made available to use via the `frontmatter ` field.
+
+You must make sure to use the `remark-code-frontmatter` plugin **before** using `remark-code-extra`.
+
+For example, if you had the following markdown:
+
+````markdown
+```
+---
+before: Some header text
+---
+Code block with a header
+```
+
+```
+---
+after: Some footer text
+---
+Code block with a footer
+```
+
+```
+---
+before: Some header text
+after: Some footer text
+---
+Code block with a header and footer
+```
+
+```
+Code block with no header or footer
+```
+````
+
+And the following unified processor:
+
+```js
+// other imports
+const codeFrontmatter = require('remark-code-frontmatter');
+const codeExtra = require('remark-code-extra');
+
+const processor = remark()
+  .use(codeFrontmatter)
+  .use(codeExtra, {
+    transform: node => node.frontmatter.before || node.frontmatter.after ? {
+      before: node.frontmatter.before && [{
+        type: 'text',
+        value: node.frontmatter.before
+      }],
+      after: node.frontmatter.after && [{
+        type: 'text',
+        value: node.frontmatter.after
+      }]
+    } : null
+  })
+  .use(html);
+```
+
+Then this would output the following HTML:
+
+```html
+<div class="code-extra">Some header text<pre><code>Code block with a header</code></pre></div>
+<div class="code-extra"><pre><code>Code block with a footer</code></pre>Some footer text</div>
+<div class="code-extra">Some header text<pre><code>Code block with a header and footer</code></pre>Some footer text</div>
+<pre><code>Code block with no header or footer
+</code></pre>
+```
+
+*Note: If you're using `remark-code-frontmatter` alongside a plugin that does code highlighting,
+make sure you use the frontmatter plugin **before** the highlighting plugin.*
+
 ## API
 
 ### `remark().use(codeExtra, options)`
@@ -197,6 +273,8 @@ unified()
 
 ## Related
 
+*   [`remark-code-frontmatter`](https://github.com/samlanning/remark-code-frontmatter)
+    — Extract frontmatter from markdown code blocks
 *   [`remark-rehype`](https://github.com/remarkjs/remark-rehype)
     — Transform Markdown to HTML
 *   [`remark-midas`](https://github.com/remarkjs/remark-midas)
