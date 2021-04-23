@@ -18,8 +18,15 @@ export interface TransformResults {
 
 export type Options = {
   transform:
-    TransformResults |
-    ((node: MDASTCode) => (void | undefined | null | TransformResults | Promise<void | undefined | null | TransformResults>));
+    | TransformResults
+    | ((
+        node: MDASTCode
+      ) =>
+        | void
+        | undefined
+        | null
+        | TransformResults
+        | Promise<void | undefined | null | TransformResults>);
 };
 
 export function validateOptions(value: any): value is Options {
