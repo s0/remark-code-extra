@@ -4,7 +4,6 @@ var gutil = require('gulp-util');
 var ts = require('gulp-typescript');
 var tslint = require('tslint');
 var gulpTslint = require('gulp-tslint');
-var runSequence = require('run-sequence');
 
 var tsProject = ts.createProject('src/tsconfig.json');
 
@@ -47,6 +46,7 @@ gulp.task('tslint', function () {
     .pipe(gulpTslint.report());
 });
 
-gulp.task('default', function (callback) {
-  runSequence('clean', ['ts', 'copy-package-json'], 'tslint', callback);
-});
+gulp.task(
+  'default',
+  gulp.series('clean', ['ts', 'copy-package-json'], 'tslint', (done) => done())
+);
