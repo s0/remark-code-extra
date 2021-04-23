@@ -1,4 +1,4 @@
-import { Attacher, Transformer } from 'unified';
+import type { Attacher, Transformer } from 'unified';
 import visit = require('unist-util-visit');
 
 import { validateOptions } from './options';
