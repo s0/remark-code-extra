@@ -15,7 +15,7 @@ function handleError(err) {
 }
 
 gulp.task('clean', function () {
-  return gulp.src(['dist'], { read: false }).pipe(clean());
+  return gulp.src(['dist'], { read: false, allowEmpty: true }).pipe(clean());
 });
 
 gulp.task('ts', function () {
