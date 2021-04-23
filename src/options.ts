@@ -1,3 +1,4 @@
+import type { VFileCompatible } from 'unified';
 import * as hast from './types/hast';
 import { MDASTCode, MDASTCodeExtra } from './types';
 
@@ -13,13 +14,24 @@ export interface TransformResults {
   /**
    * A general function that applies arbitrary changes to the MDAST node
    */
-  transform?: (node: MDASTCodeExtra) => void | Promise<void>;
+  transform?: (
+    node: MDASTCodeExtra,
+    file: VFileCompatible
+  ) => void | Promise<void>;
 }
 
 export type Options = {
   transform:
-    TransformResults |
-    ((node: MDASTCode) => (void | undefined | null | TransformResults | Promise<void | undefined | null | TransformResults>));
+    | TransformResults
+    | ((
+        node: MDASTCode,
+        file: VFileCompatible
+      ) =>
+        | void
+        | undefined
+        | null
+        | TransformResults
+        | Promise<void | undefined | null | TransformResults>);
 };
 
 export function validateOptions(value: any): value is Options {
