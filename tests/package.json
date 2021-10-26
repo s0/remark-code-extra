@@ -22,7 +22,7 @@
     "mocha": "^6.1.4",
     "remark": "^10.0.1",
     "remark-highlight.js": "^5.1.1",
-    "remark-html": "^9.0.0",
+    "remark-html": "^13.0.2",
     "remark-midas": "^5.1.1",
     "remark-tree-sitter": "^1.0.3"
   }
